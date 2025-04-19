@@ -8,7 +8,7 @@ import com.example.hotelmanagementbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -20,11 +20,11 @@ public class AuthService {
     }
 
     public void login(LoginRequest loginRequest) {
-        List<User> userFound = userRepository.findByEmail(loginRequest.getEmail());
+        Optional<User> userFound = userRepository.findByEmail(loginRequest.getEmail());
 
         if(userFound.isEmpty()){
             throw new UserNotFoundException("Invalid email");
-        } else if(!userFound.get(0).getPassword().equals(loginRequest.getPassword())){
+        } else if(!userFound.get().getPassword().equals(loginRequest.getPassword())){
             throw new InvalidPasswordException("Invalid password");
         }
     }

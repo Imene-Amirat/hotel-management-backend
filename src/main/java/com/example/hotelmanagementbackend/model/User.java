@@ -3,9 +3,10 @@ package com.example.hotelmanagementbackend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Getter  //generates getters automatically
+@Entity //generates getters automatically
+@Getter
 @Setter
+@ToString
 @AllArgsConstructor  //generates an all-args constructor
 @NoArgsConstructor
 public class User {
