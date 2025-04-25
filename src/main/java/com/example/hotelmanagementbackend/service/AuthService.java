@@ -19,7 +19,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public void login(LoginRequest loginRequest) {
+    public User login(LoginRequest loginRequest) {
         Optional<User> userFound = userRepository.findByEmail(loginRequest.getEmail());
 
         if(userFound.isEmpty()){
@@ -27,5 +27,7 @@ public class AuthService {
         } else if(!userFound.get().getPassword().equals(loginRequest.getPassword())){
             throw new InvalidPasswordException("Invalid password");
         }
+
+        return userFound.get();
     }
 }
