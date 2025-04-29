@@ -1,8 +1,10 @@
 package com.example.hotelmanagementbackend.service;
 
 import com.example.hotelmanagementbackend.dto.LoginRequest;
+import com.example.hotelmanagementbackend.dto.RegisterRequest;
 import com.example.hotelmanagementbackend.exception.InvalidPasswordException;
 import com.example.hotelmanagementbackend.exception.UserNotFoundException;
+import com.example.hotelmanagementbackend.model.Role;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -33,6 +35,20 @@ public class AuthService {
         }
 
         return userFound.get();
+    }
+
+    public void register(RegisterRequest registerRequest, HttpServletRequest request){
+        if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
+            throw new EmailDuplicatedException("Email already in use");
+        }
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(registerRequest.getPassword());
+        user.setRole(Role.CLIENT);
+
+        userRepository.save(user);
+        request.getSession().setAttribute("user", user);
     }
 
     public boolean isAuth(HttpServletRequest request){

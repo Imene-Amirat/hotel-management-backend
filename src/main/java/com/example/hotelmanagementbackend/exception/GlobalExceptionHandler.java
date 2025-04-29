@@ -19,6 +19,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    @ExceptionHandler(EmailDuplicatedException.class)
+    public ResponseEntity<String> handleEmailDuplicatedException(EmailDuplicatedException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     //Handles database constraint violations (duplicate email, foreign key issues)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDatabaseError(DataIntegrityViolationException ex) {

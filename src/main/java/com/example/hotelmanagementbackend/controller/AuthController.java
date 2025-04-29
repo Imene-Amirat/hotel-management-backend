@@ -1,11 +1,13 @@
 package com.example.hotelmanagementbackend.controller;
 
 import com.example.hotelmanagementbackend.dto.LoginRequest;
+import com.example.hotelmanagementbackend.dto.RegisterRequest;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,12 @@ public class AuthController {
         //create session and store user
         request.getSession().setAttribute("user", user);
         return ResponseEntity.ok(Map.of("message", "Login successful"));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Map<String,String>> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request){
+        authService.register(registerRequest, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Registration successful"));
     }
 
     @GetMapping("/isAuthenticated")
