@@ -2,6 +2,7 @@ package com.example.hotelmanagementbackend.service;
 
 import com.example.hotelmanagementbackend.dto.LoginRequest;
 import com.example.hotelmanagementbackend.dto.RegisterRequest;
+import com.example.hotelmanagementbackend.exception.EmailDuplicatedException;
 import com.example.hotelmanagementbackend.exception.InvalidPasswordException;
 import com.example.hotelmanagementbackend.exception.UserNotFoundException;
 import com.example.hotelmanagementbackend.model.Role;
