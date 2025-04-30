@@ -54,7 +54,7 @@ public class AuthService {
 
     public boolean isAuth(HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        if(session != null && session.isNew()){
+        if (session != null && !session.isNew()){
             User user = (User) session.getAttribute("user");
             return user != null;
         }
