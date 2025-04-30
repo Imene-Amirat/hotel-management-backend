@@ -6,6 +6,7 @@ import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public ResponseEntity<Map<String,String>> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         User user = authService.login(loginRequest);
         //create session and store user
         request.getSession().setAttribute("user", user);
@@ -32,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String,String>> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request){
+    public ResponseEntity<Map<String,String>> register(@Valid  @RequestBody RegisterRequest registerRequest, HttpServletRequest request){
         authService.register(registerRequest, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Registration successful"));
     }
