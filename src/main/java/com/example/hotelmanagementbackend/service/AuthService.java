@@ -4,7 +4,7 @@ import com.example.hotelmanagementbackend.dto.LoginRequest;
 import com.example.hotelmanagementbackend.dto.RegisterRequest;
 import com.example.hotelmanagementbackend.exception.EmailDuplicatedException;
 import com.example.hotelmanagementbackend.exception.InvalidPasswordException;
-import com.example.hotelmanagementbackend.exception.UserNotFoundException;
+import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
 import com.example.hotelmanagementbackend.model.Role;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.repository.UserRepository;
@@ -30,7 +30,7 @@ public class AuthService {
         Optional<User> userFound = userRepository.findByEmail(loginRequest.getEmail());
 
         if(userFound.isEmpty()){
-            throw new UserNotFoundException("Invalid email");
+            throw new ResourceNotFoundException("Invalid email");
         } else if(!userFound.get().getPassword().equals(loginRequest.getPassword())){
             throw new InvalidPasswordException("Invalid password");
         }
