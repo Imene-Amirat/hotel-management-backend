@@ -60,4 +60,7 @@ public class Room {
 
     @Column(nullable = false)
     private boolean hasKitchen;
+
+    @Column(nullable = false)
+    private boolean isAvailable;
 }
