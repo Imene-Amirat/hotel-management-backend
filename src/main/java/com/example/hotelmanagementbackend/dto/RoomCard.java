@@ -13,5 +13,7 @@ public class RoomCard {
     private int capacityAdults;
     private int capacityChildren;
     private double pricePerNight;
+    private double roomSize;
+    private String bedType;
     private String imageUrl;
 }

@@ -42,6 +42,8 @@ public class RoomService {
         roomCard.setType(room.getType());
         roomCard.setCapacityAdults(room.getCapacityAdults());
         roomCard.setCapacityChildren(room.getCapacityChildren());
+        roomCard.setRoomSize(room.getRoomSize());
+        roomCard.setBedType(room.getBedType());
         roomCard.setPricePerNight(room.getPricePerNight());
         roomCard.setImageUrl(room.getImageUrl());
 
