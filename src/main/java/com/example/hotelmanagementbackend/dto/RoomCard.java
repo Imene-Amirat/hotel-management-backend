@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class RoomCard {
     private int id;
-    private String type;
+    private String name;
     private int capacityAdults;
     private int capacityChildren;
     private double pricePerNight;

@@ -5,8 +5,10 @@ import com.example.hotelmanagementbackend.dto.RoomGalleryImageDTO;
 import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
 import com.example.hotelmanagementbackend.model.Room;
 import com.example.hotelmanagementbackend.model.RoomGalleryImage;
+import com.example.hotelmanagementbackend.model.RoomType;
 import com.example.hotelmanagementbackend.repository.RoomGalleryImageRepository;
 import com.example.hotelmanagementbackend.repository.RoomRepository;
+import com.example.hotelmanagementbackend.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,49 +20,51 @@ import java.util.Optional;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomGalleryImageRepository roomGalleryImageRepository;
+    private final RoomTypeRepository roomTypeRepository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, RoomGalleryImageRepository roomGalleryImageRepository) {
+    public RoomService(RoomRepository roomRepository, RoomGalleryImageRepository roomGalleryImageRepository, RoomTypeRepository roomTypeRepository) {
+        this.roomTypeRepository = roomTypeRepository;
         this.roomRepository = roomRepository;
         this.roomGalleryImageRepository = roomGalleryImageRepository;
     }
 
     public List<RoomCard> getAllRooms() {
-        List<Room> rooms =  roomRepository.findAll();
+        List<RoomType> roomsType =  roomTypeRepository.findAll();
 
         List<RoomCard> roomCards = new ArrayList<>();
-        for(Room room: rooms){
-            roomCards.add(mapToRoomCard(room));
+        for(RoomType roomType : roomsType){
+            roomCards.add(mapToRoomCard(roomType));
         }
         return roomCards;
     }
 
-    private RoomCard mapToRoomCard(Room room){
+    private RoomCard mapToRoomCard(RoomType roomType){
         RoomCard roomCard = new RoomCard();
 
-        roomCard.setId(room.getId());
-        roomCard.setType(room.getType());
-        roomCard.setCapacityAdults(room.getCapacityAdults());
-        roomCard.setCapacityChildren(room.getCapacityChildren());
-        roomCard.setRoomSize(room.getRoomSize());
-        roomCard.setBedType(room.getBedType());
-        roomCard.setPricePerNight(room.getPricePerNight());
-        roomCard.setImageUrl(room.getImageUrl());
+        roomCard.setId(roomType.getId());
+        roomCard.setName(roomType.getName());
+        roomCard.setCapacityAdults(roomType.getCapacityAdults());
+        roomCard.setCapacityChildren(roomType.getCapacityChildren());
+        roomCard.setRoomSize(roomType.getRoomSize());
+        roomCard.setBedType(roomType.getBedType());
+        roomCard.setPricePerNight(roomType.getPricePerNight());
+        roomCard.setImageUrl(roomType.getImageUrl());
 
         return roomCard;
     }
     
-    public Room getRoomById(int id){
-        return roomRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Room not found with ID: " + id));
+    public RoomType getRoomById(int id){
+        return roomTypeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Room not found with ID: " + id));
     }
 
     public List<RoomGalleryImageDTO> getGalleryByRoomId(int id){
-        Optional<Room> room = roomRepository.findById(id);
+        Optional<RoomType> roomType = roomTypeRepository.findById(id);
 
-        if(room.isEmpty()){
-            throw new ResourceNotFoundException("Room not found with ID: " + id);
+        if(roomType.isEmpty()){
+            throw new ResourceNotFoundException("Room Type not found with ID: " + id);
         }
-        List<RoomGalleryImage> roomImages = roomGalleryImageRepository.findByRoomId(id);
+        List<RoomGalleryImage> roomImages = roomGalleryImageRepository.findByRoomTypeId(id);
 
         List<RoomGalleryImageDTO> roomImagesDTO = new ArrayList<>();
         for(RoomGalleryImage roomImage: roomImages){
@@ -75,12 +79,5 @@ public class RoomService {
         roomImageDTO.setImageUrl(roomImage.getImageUrl());
 
         return roomImageDTO;
-    }
-
-    public void createRoom(Room room){
-        roomRepository.save(room);
-    }
-
-    public void deleteRoom(Long id) {
     }
 }

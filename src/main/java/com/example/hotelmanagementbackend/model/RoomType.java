@@ -9,14 +9,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Room {
+public class RoomType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
-    private String type;
+    private String name;
 
     @Column(nullable = false)
     private String description;
@@ -60,7 +60,4 @@ public class Room {
 
     @Column(nullable = false)
     private boolean hasKitchen;
-
-    @Column(nullable = false)
-    private boolean isAvailable;
 }
