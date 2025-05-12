@@ -6,10 +6,9 @@ import com.example.hotelmanagementbackend.model.RoomType;
 import com.example.hotelmanagementbackend.repository.ReservationRepository;
 import com.example.hotelmanagementbackend.repository.RoomRepository;
 import com.example.hotelmanagementbackend.repository.RoomTypeRepository;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,10 +24,12 @@ public class ReservationService {
         this.roomRepository = roomRepository;
     }
 
-    public void checkAvailability(int roomTypeId, Date checkIn, Date checkOut) {
+    public boolean checkAvailability(int roomTypeId, LocalDate checkIn, LocalDate checkOut) {
         RoomType roomType = roomTypeRepository.findById(roomTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("room type not found with this ID " + roomTypeId));
 
-        List<Room> rooms = roomRepository.findAvailabilityByTypeAnd();
+        List<Room> availableRooms = roomRepository.findAvailabilityRoomsByTypeAndDates(roomTypeId, checkIn, checkOut);
+
+        return !availableRooms.isEmpty();
     }
 }
