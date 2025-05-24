@@ -2,6 +2,7 @@ package com.example.hotelmanagementbackend.controller;
 
 import com.example.hotelmanagementbackend.dto.LoginRequest;
 import com.example.hotelmanagementbackend.dto.RegisterRequest;
+import com.example.hotelmanagementbackend.dto.UserDTO;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +43,15 @@ public class AuthController {
     public ResponseEntity<Map<String, Object>> isAuth(HttpServletRequest request) {
         boolean loggedIn = authService.isAuth(request);
         return ResponseEntity.ok(Map.of("loggedIn", loggedIn));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO>  getCurrentUser(HttpServletRequest request){
+        UserDTO userDTO =  authService.getCurrentUser(request);
+        if(userDTO != null)
+            return ResponseEntity.ok(userDTO);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping("/logout")

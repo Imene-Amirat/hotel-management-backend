@@ -2,6 +2,7 @@ package com.example.hotelmanagementbackend.service;
 
 import com.example.hotelmanagementbackend.dto.LoginRequest;
 import com.example.hotelmanagementbackend.dto.RegisterRequest;
+import com.example.hotelmanagementbackend.dto.UserDTO;
 import com.example.hotelmanagementbackend.exception.EmailDuplicatedException;
 import com.example.hotelmanagementbackend.exception.InvalidPasswordException;
 import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
@@ -59,6 +60,26 @@ public class AuthService {
             return user != null;
         }
         return false;
+    }
+
+    public UserDTO getCurrentUser(HttpServletRequest req){
+        HttpSession session = req.getSession(false);  //false: don't create new if it doesn't exist
+        if (session != null){
+            User user = (User) session.getAttribute("user");
+            if(user != null){
+                return mapToUserDTO(user);
+            }
+        }
+        return null;
+    }
+
+    public UserDTO mapToUserDTO(User user){
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+
+        return dto;
     }
 
     public void logout(HttpServletRequest request, HttpServletResponse response){
