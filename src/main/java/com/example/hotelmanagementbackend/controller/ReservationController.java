@@ -1,8 +1,13 @@
 package com.example.hotelmanagementbackend.controller;
 
-import com.example.hotelmanagementbackend.dto.BookingCheckRequest;
+import com.example.hotelmanagementbackend.dto.CreateReservationRequest;
+import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
+import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.ReservationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +23,17 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping("/check-availability")
-    public ResponseEntity<Map<String,Object>> checkAvailability(@Valid @RequestBody BookingCheckRequest bookingCheckRequest){
-        boolean isAvailable = reservationService.checkAvailability(bookingCheckRequest.getRoomTypeId(), bookingCheckRequest.getCheckIn(), bookingCheckRequest.getCheckOut());
+    @PostMapping("/")
+    public ResponseEntity<Map<String,String>> createReservation(@Valid @RequestBody CreateReservationRequest res, HttpServletRequest req){
+        System.out.println("zzzzzzzzzzzzz");
+        HttpSession session = req.getSession(false);
+        if (session != null){
+            User user = (User) session.getAttribute("user");
+            if(user != null){
+                reservationService.createReservation(res, user);
+            }
+        }
 
-        return ResponseEntity.ok(Map.of("available", isAvailable));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Reservation created successfully!"));
     }
 }
