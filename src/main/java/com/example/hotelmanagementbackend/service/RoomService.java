@@ -2,6 +2,7 @@ package com.example.hotelmanagementbackend.service;
 
 import com.example.hotelmanagementbackend.dto.RoomCard;
 import com.example.hotelmanagementbackend.dto.RoomGalleryImageDTO;
+import com.example.hotelmanagementbackend.dto.RoomInfoDTO;
 import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
 import com.example.hotelmanagementbackend.model.Room;
 import com.example.hotelmanagementbackend.model.RoomGalleryImage;
@@ -12,6 +13,7 @@ import com.example.hotelmanagementbackend.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,5 +81,34 @@ public class RoomService {
         roomImageDTO.setImageUrl(roomImage.getImageUrl());
 
         return roomImageDTO;
+    }
+
+    public boolean checkRoomAvailability(Integer roomTypeId, LocalDate checkIn, LocalDate checkOut) {
+        RoomType roomType = roomTypeRepository.findById(roomTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("room type not found with this ID " + roomTypeId));
+
+        List<Room> availableRooms = roomRepository.findAvailabilityRoomsByTypeAndDates(roomTypeId, checkIn, checkOut);
+
+        return !availableRooms.isEmpty();
+    }
+
+    public RoomInfoDTO getFirstAvailableRoom(Integer roomTypeId, LocalDate checkIn, LocalDate checkOut){
+        RoomType roomType = roomTypeRepository.findById(roomTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("room type not found with this ID " + roomTypeId));
+
+        List<Room> availableRooms = roomRepository.findAvailabilityRoomsByTypeAndDates(roomTypeId, checkIn, checkOut);
+
+        if(availableRooms.isEmpty())
+            throw new ResourceNotFoundException("No available rooms for the given type and date range.");
+
+        return mapToRoomInfoDTO(availableRooms.get(0));
+    }
+
+    private RoomInfoDTO mapToRoomInfoDTO(Room room){
+        RoomInfoDTO dto = new RoomInfoDTO();
+        dto.setId(room.getId());
+        dto.setRoomNumber(room.getRoomNumber());
+
+        return dto;
     }
 }
