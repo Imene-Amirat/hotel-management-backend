@@ -30,9 +30,11 @@ public class ReservationController {
             User user = (User) session.getAttribute("user");
             if(user != null){
                 reservationService.createReservation(res, user);
+                return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Reservation created successfully!"));
+
             }
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Reservation created successfully!"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "You must be logged in.!"));
     }
 }
