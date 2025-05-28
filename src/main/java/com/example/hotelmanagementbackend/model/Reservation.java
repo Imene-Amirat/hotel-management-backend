@@ -49,5 +49,5 @@ public class Reservation {
     private double totalPrice;
 
     @Column(nullable = false)
-    private String status;
+    private ReservationStatus status;
 }

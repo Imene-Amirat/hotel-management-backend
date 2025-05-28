@@ -25,7 +25,6 @@ public class ReservationController {
 
     @PostMapping("/")
     public ResponseEntity<Map<String,String>> createReservation(@Valid @RequestBody CreateReservationRequest res, HttpServletRequest req){
-        System.out.println("zzzzzzzzzzzzz");
         HttpSession session = req.getSession(false);
         if (session != null){
             User user = (User) session.getAttribute("user");

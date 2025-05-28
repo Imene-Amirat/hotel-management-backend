@@ -3,6 +3,7 @@ package com.example.hotelmanagementbackend.service;
 import com.example.hotelmanagementbackend.dto.CreateReservationRequest;
 import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
 import com.example.hotelmanagementbackend.model.Reservation;
+import com.example.hotelmanagementbackend.model.ReservationStatus;
 import com.example.hotelmanagementbackend.model.Room;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.repository.ReservationRepository;
@@ -40,7 +41,7 @@ public class ReservationService {
         dto.setGuestCity(res.getCity());
         dto.setGuestPhone(res.getPhone());
         dto.setTotalPrice(res.getTotalPrice());
-        dto.setStatus(res.getStatus());
+        dto.setStatus(ReservationStatus.PENDING);
 
         return dto;
     }
