@@ -75,7 +75,6 @@ public class AuthService {
 
     public UserDTO mapToUserDTO(User user){
         UserDTO dto = new UserDTO();
-        dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
 
