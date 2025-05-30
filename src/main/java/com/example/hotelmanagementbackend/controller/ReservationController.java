@@ -1,7 +1,7 @@
 package com.example.hotelmanagementbackend.controller;
 
 import com.example.hotelmanagementbackend.dto.CreateReservationRequest;
-import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
+import com.example.hotelmanagementbackend.dto.ReservationResponseDTO;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,17 +24,17 @@ public class ReservationController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Map<String,String>> createReservation(@Valid @RequestBody CreateReservationRequest res, HttpServletRequest req){
+    public ResponseEntity<?> createReservation(@Valid @RequestBody CreateReservationRequest res, HttpServletRequest req){
         HttpSession session = req.getSession(false);
         if (session != null){
             User user = (User) session.getAttribute("user");
             if(user != null){
-                reservationService.createReservation(res, user);
-                return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Reservation created successfully!"));
+                int reservationId = reservationService.createReservation(res, user);
+                ReservationResponseDTO response = new ReservationResponseDTO(reservationId, "Reservation created successfully!");
 
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "You must be logged in.!"));
     }
 }

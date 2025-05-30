@@ -8,8 +8,6 @@ import com.example.hotelmanagementbackend.model.Room;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.repository.ReservationRepository;
 import com.example.hotelmanagementbackend.repository.RoomRepository;
-import com.example.hotelmanagementbackend.repository.RoomTypeRepository;
-import com.example.hotelmanagementbackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,8 +21,9 @@ public class ReservationService {
         this.roomRepository = roomRepository1;
     }
 
-    public void createReservation(CreateReservationRequest res, User user){
-        reservationRepository.save(mappedEntity(res, user));
+    public int createReservation(CreateReservationRequest res, User user){
+        Reservation reservation = reservationRepository.save(mappedEntity(res, user));
+        return reservation.getId();
     }
 
     private Reservation mappedEntity(CreateReservationRequest res, User user){
