@@ -1,6 +1,7 @@
 package com.example.hotelmanagementbackend.service;
 
 import com.example.hotelmanagementbackend.dto.CreateReservationRequest;
+import com.example.hotelmanagementbackend.dto.ReservationPaymentInfoDTO;
 import com.example.hotelmanagementbackend.exception.ResourceNotFoundException;
 import com.example.hotelmanagementbackend.model.Reservation;
 import com.example.hotelmanagementbackend.model.ReservationStatus;
@@ -41,6 +42,26 @@ public class ReservationService {
         dto.setGuestPhone(res.getPhone());
         dto.setTotalPrice(res.getTotalPrice());
         dto.setStatus(ReservationStatus.PENDING);
+
+        return dto;
+    }
+
+    public ReservationPaymentInfoDTO getReservationById(Integer id){
+        Reservation resFound = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation not found with ID: " + id));
+
+        return mapToDTO(resFound);
+    }
+
+    private ReservationPaymentInfoDTO mapToDTO(Reservation res){
+        ReservationPaymentInfoDTO dto = new ReservationPaymentInfoDTO();
+        dto.setGuestFirstName(res.getGuestFirstName());
+        dto.setGuestLastName(res.getGuestLastName());
+        dto.setCheckIn(res.getCheckIn());
+        dto.setCheckOut(res.getCheckOut());
+        dto.setGuestPhone(res.getGuestPhone());
+        dto.setTotalPrice(res.getTotalPrice());
+        dto.setRoomNumber(res.getRoom().getRoomNumber());
 
         return dto;
     }

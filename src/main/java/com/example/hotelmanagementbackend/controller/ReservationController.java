@@ -1,6 +1,7 @@
 package com.example.hotelmanagementbackend.controller;
 
 import com.example.hotelmanagementbackend.dto.CreateReservationRequest;
+import com.example.hotelmanagementbackend.dto.ReservationPaymentInfoDTO;
 import com.example.hotelmanagementbackend.dto.ReservationResponseDTO;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.ReservationService;
@@ -37,4 +38,10 @@ public class ReservationController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "You must be logged in.!"));
     }
+
+    @GetMapping("/{id}")
+    public ReservationPaymentInfoDTO getReservationById(@PathVariable Integer id){
+        return reservationService.getReservationById(id);
+    }
+
 }
