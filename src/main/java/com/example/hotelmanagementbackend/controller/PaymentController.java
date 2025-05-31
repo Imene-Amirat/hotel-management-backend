@@ -22,7 +22,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Map<String,String>> createPayment(@Valid @RequestBody PaymentRequest p){
         paymentService.createPayment(p);
 

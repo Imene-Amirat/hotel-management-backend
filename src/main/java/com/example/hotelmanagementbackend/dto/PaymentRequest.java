@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class PaymentRequest {
 
     @NotNull(message = "reservation id is required")
-    private int reservation_id;
+    private int reservationId;
 
     @NotNull(message = "amount is required")
     private Double amount;

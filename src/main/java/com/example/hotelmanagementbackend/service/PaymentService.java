@@ -24,8 +24,8 @@ public class PaymentService {
 
     @Transactional
     public void createPayment(PaymentRequest p) {
-        Reservation res = reservationRepository.findById(p.getReservation_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+        Reservation res = reservationRepository.findById(p.getReservationId())
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation not found with this ID"));
 
         // save payment
         paymentRepository.save(mappedEntity(p,res));
