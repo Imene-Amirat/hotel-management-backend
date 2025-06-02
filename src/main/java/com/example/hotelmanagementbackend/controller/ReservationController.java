@@ -3,6 +3,7 @@ package com.example.hotelmanagementbackend.controller;
 import com.example.hotelmanagementbackend.dto.CreateReservationRequest;
 import com.example.hotelmanagementbackend.dto.ReservationPaymentInfoDTO;
 import com.example.hotelmanagementbackend.dto.ReservationResponseDTO;
+import com.example.hotelmanagementbackend.dto.UserReservationDTO;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,6 +44,20 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ReservationPaymentInfoDTO getReservationById(@PathVariable Integer id){
         return reservationService.getReservationById(id);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getAllReservationsByUser(HttpServletRequest req){
+        HttpSession session = req.getSession(false);
+        if (session != null){
+            User user = (User) session.getAttribute("user");
+            if(user != null){
+                List<UserReservationDTO> listReservations = reservationService.getAllReservationsByUser(user);
+
+                return ResponseEntity.ok(listReservations);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "You must be logged in.!"));
     }
 
 }

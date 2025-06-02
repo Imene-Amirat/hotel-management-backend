@@ -1,9 +1,12 @@
 package com.example.hotelmanagementbackend.repository;
 
 import com.example.hotelmanagementbackend.model.Reservation;
-import jdk.jfr.Registered;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Registered
+import java.util.List;
+
+@Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+    List<Reservation> findByUserId(Long userId);
 }

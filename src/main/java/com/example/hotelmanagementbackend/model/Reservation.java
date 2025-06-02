@@ -48,6 +48,6 @@ public class Reservation {
     @Column(nullable = false)
     private double totalPrice;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 }
