@@ -60,4 +60,20 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "You must be logged in.!"));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String,String>> deleteReservationByUser(@PathVariable Integer id, HttpServletRequest req){
+        HttpSession session = req.getSession(false);
+        if (session != null){
+            User user = (User) session.getAttribute("user");
+            if(user != null){
+                boolean deleted = reservationService.deleteReservationsByUser(id, user.getId());
+                if(deleted){
+                    return ResponseEntity.ok(Map.of("message", "Deleted successfully!"));
+                } else {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Reservation not found or does not belong to user."));
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "You must be logged in.!"));
+    }
 }

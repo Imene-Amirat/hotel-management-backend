@@ -14,6 +14,7 @@ import java.sql.Date;
 @AllArgsConstructor
 public class UserReservationDTO {
 
+    private int id;
     private String guestFirstName;
     private String guestLastName;
     private int roomNumber;

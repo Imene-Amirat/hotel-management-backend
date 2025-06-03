@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -86,6 +87,7 @@ public class ReservationService {
 
         for(Reservation ele : reservations){
             UserReservationDTO dto = new UserReservationDTO();
+            dto.setId(ele.getId());
             dto.setGuestFirstName(ele.getGuestFirstName());
             dto.setGuestLastName(ele.getGuestLastName());
             dto.setStatus(ele.getStatus());
@@ -99,5 +101,14 @@ public class ReservationService {
             listDto.add(dto);
         }
         return listDto;
+    }
+
+    public boolean deleteReservationsByUser(Integer id, Long userId){
+        Optional<Reservation> res = reservationRepository.findById(id);
+        if (res.isPresent() && res.get().getUser().getId().equals(userId)) {
+            reservationRepository.delete(res.get());
+            return true;
+        }
+        return false;
     }
 }
