@@ -5,6 +5,7 @@ import com.example.hotelmanagementbackend.model.Facility;
 import com.example.hotelmanagementbackend.service.FacilityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,12 @@ public class FacilityController {
             ResponseEntity.ok(Map.of("message","there is no features"));
         }
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FacilityDTO> getFeatureById(@PathVariable Integer id){
+        FacilityDTO facilityDTO =  facilityService.getFeatureById(id);
+
+        return ResponseEntity.ok(facilityDTO);
     }
 }
