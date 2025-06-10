@@ -1,7 +1,7 @@
 package com.example.hotelmanagementbackend.controller;
 
 import com.example.hotelmanagementbackend.dto.FacilityDTO;
-import com.example.hotelmanagementbackend.model.Facility;
+import com.example.hotelmanagementbackend.dto.FacilityGalleryImageDTO;
 import com.example.hotelmanagementbackend.service.FacilityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,5 +37,10 @@ public class FacilityController {
         FacilityDTO facilityDTO =  facilityService.getFeatureById(id);
 
         return ResponseEntity.ok(facilityDTO);
+    }
+
+    @GetMapping("/{id}/gallery")
+    public  List<FacilityGalleryImageDTO> getGalleryByFacilityId(@PathVariable Integer id){
+        return facilityService.getGalleryByFacilityId(id);
     }
 }
