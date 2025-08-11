@@ -1,5 +1,6 @@
 package com.example.hotelmanagementbackend.controller;
 
+import com.example.hotelmanagementbackend.dto.UserCard;
 import com.example.hotelmanagementbackend.model.User;
 import com.example.hotelmanagementbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -20,22 +21,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<User> getUser() {
-        return  userService.getUsers();
+    @GetMapping("/")
+    public List<UserCard> getUsers() {
+        return  userService.getAllUsers();
     }
-
-    @PostMapping
-    public ResponseEntity<String> addUser(@RequestBody User user) {
-        userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created");
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully!");
-
-    }
-
 }
